@@ -42,9 +42,9 @@ Overview
 .. end-badges
 
 This package aims to provide a common template for building iterative solvers, 
-those solver that approaximate the solution of problem with incremental steps. One of this
-step is called "update". To this aim the propose a simple template for 
-developing, tuning and using iterative solver. 
+those solver that approximate problem solutions with incremental steps (called "update" in this project).
+This template will over a minimal base for developing, tuning and using iterative solvers from the earliest 
+protypting phase to the delivery of block box algorithm.
 
 The interface between an (advanced) user and the iterative solver is decomposed into the following 4 main phases
 
