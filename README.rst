@@ -55,23 +55,25 @@ Overview
 
 .. end-badges
 
-Python package providing the template and the basic operations to build iterative solver. 
+This package aims to provide a common template for building iterative solvers, 
+those solver that approaximate the solution of problem with incremental steps. One of this
+step is called "update". To this aim the propose a simple template for 
+developing, tuning and using iterative solver. 
 
-We decompose any iterative solver into 4 main steps where the user has a specific task:
-1 - set the solver controls and problem inputs before the next update. 
-2 - reset the solver controls reset problem inputs after a solver failure 
-3 - study any you want combaning the information from problem, unknows, and solver
-4 - set when the solver has finished its job.
+The interface between an (advanced) user and the iterative solver is decomposed into the following 4 main phases
+
+1. set the solver controls and problem inputs before the next update;
+2. reset the solver controls reset problem inputs after a update failure; 
+3. study any you want combaning the information from problem, unknows, and solver;
+4. set when the solver has finished its job.
 
 This decomposition is done via a Reverse Communication (RC) 
 approach, an old style of programming used for 
-example in the ARPACK library), combined with Python classes. 
-While Python is so flexible that other approaches could have been used, we adopt it
-because it let the user work "manually" on the structures
+example in the `ARPACK <https://www.caam.rice.edu/software/ARPACK/>`_ library, combined with Python classes. 
+We adopt this approach because it let the user work "manually" on the structures
 describing its problem instead of having to define in advance 
 the procedure to handle the steps 1,2,3,4. This is particularly convient in early step of
-the algorithm development. A nicer and clenear 
-function hiding the RC cycle to an user who 
+the algorithm development. A nicer and clenear function hiding the RC cycle to an user who 
 wants a block-box solver can be easily build.
 
 
