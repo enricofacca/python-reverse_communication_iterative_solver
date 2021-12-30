@@ -11,10 +11,8 @@ Overview
       - |docs|
     * - tests
       - | |github-actions| |requires|
-        | |codecov|
     * - package
       - | |version| |wheel| |supported-versions| |supported-implementations|
-        | |commits-since|
 .. |docs| image:: https://readthedocs.org/projects/python-reverse_communication_iterative_solver/badge/?style=flat
     :target: https://python-reverse_communication_iterative_solver.readthedocs.io/
     :alt: Documentation Status
@@ -27,14 +25,6 @@ Overview
     :alt: Requirements Status
     :target: https://requires.io/github/enricofacca/python-reverse_communication_iterative_solver/requirements/?branch=master
 
-.. |codecov| image:: https://codecov.io/gh/enricofacca/python-reverse_communication_iterative_solver/branch/master/graphs/badge.svg?branch=master
-    :alt: Coverage Status
-    :target: https://codecov.io/github/enricofacca/python-reverse_communication_iterative_solver
-
-.. |version| image:: https://img.shields.io/pypi/v/reverse-communication-iterative-solver.svg
-    :alt: PyPI Package latest release
-    :target: https://pypi.org/project/reverse-communication-iterative-solver
-
 .. |wheel| image:: https://img.shields.io/pypi/wheel/reverse-communication-iterative-solver.svg
     :alt: PyPI Wheel
     :target: https://pypi.org/project/reverse-communication-iterative-solver
@@ -46,10 +36,6 @@ Overview
 .. |supported-implementations| image:: https://img.shields.io/pypi/implementation/reverse-communication-iterative-solver.svg
     :alt: Supported implementations
     :target: https://pypi.org/project/reverse-communication-iterative-solver
-
-.. |commits-since| image:: https://img.shields.io/github/commits-since/enricofacca/python-reverse_communication_iterative_solver/v0.0.0.svg
-    :alt: Commits since latest release
-    :target: https://github.com/enricofacca/python-reverse_communication_iterative_solver/compare/v0.0.0...master
 
 
 
