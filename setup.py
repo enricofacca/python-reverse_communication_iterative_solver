@@ -23,7 +23,7 @@ def read(*names, **kwargs):
 
 setup(
     name='reverse-communication-iterative-solver',
-    version='0.0.0',
+    version='0.0.1',
     license='LGPL-3.0-or-later',
     description='Python package/template to build iterative solver via reverse communication and classes',
     long_description='%s\n%s' % (
