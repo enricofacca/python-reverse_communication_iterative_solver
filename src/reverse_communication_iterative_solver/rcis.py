@@ -69,7 +69,7 @@ class Solver(ABC):
     """
     @abstractmethod
     def update(self, problem, unknows):
-        return unknows,ierr,self;
+        return unknows, ierr, self
 
 
 class ConstrainedSolver(ABC): 
@@ -92,7 +92,8 @@ class ConstrainedSolver(ABC):
     """
     @abstractmethod
     def syncronize(self, problem, unknows):
-        return unknows,ierr,self;
+        return unknows, ierr, self
+
 
 # Two (empty) abstact classes that will contain
 # respectively problem unknows and inputs.
@@ -101,9 +102,17 @@ class ConstrainedSolver(ABC):
 # solution of a PDE.
 # Inputs will contain the coefficient of the forcing term in a PDE.
 class Unknows(ABC):
-    NumberOfUnknows=0;
+    """
+    Empty class used to fixed the name of unknows class
+    """
+    NumberOfUnknows = 0
+
+    
 class Problem(ABC):
-    NumberOfInputs=0;
+    """
+    Empty class used ot fixed the name
+    """
+    NumberOfInputs = 0
     
     
 class CycleControls():
@@ -117,26 +126,25 @@ class CycleControls():
                  verbose=0):
         # State variable of iteration
         # Order comunication flag 
-        self.flag=0
+        self.flag = 0
         # State comunication flag
-        self.info=0
+        self.info = 0
         # Update counter
-        self.iterations=0
+        self.iterations = 0
         # Restart counter
-        self.nrestart_update=0
-        
-        
+        self.nrestart_update = 0
+                
         # Controls of iterative algorithm
         # maximum number of updates
-        self.max_iterations=max_iterations
+        self.max_iterations = max_iterations
         # maximum number of restart
-        self.max_restart_update=max_restart_update
+        self.max_restart_update = max_restart_update
         # verbose
-        self.verbose=verbose
+        self.verbose = verbose
         
         # Statistics of iterative algorithm
         # Cpu conter
-        self.cpu_time=0
+        self.cpu_time = 0
         
     def reverse_communication_solver(self, solver, problem, unknows):
         """ 
@@ -152,14 +160,14 @@ class CycleControls():
     
         if (self.flag == 0):
             # study system
-            self.flag=3
-            self.ierr=0                
-            return self, unknows,solver;
+            self.flag = 3
+            self.ierr = 0                
+            return self, unknows, solver
     
-        if (self.flag == 2 ):
+        if (self.flag == 2):
             # user has settled problem inputs and controls
             # now we update
-            self.ierr=0
+            self.ierr = 0
             
             # Update cycle. 
             # If it succees goes to the evaluation of
@@ -167,99 +175,100 @@ class CycleControls():
             # In case of failure, reset controls
             # and ask new problem inputs or ask the user to
             # reset controls (flag == 2 + ierr=-1 ).
-
-            print(self.verbose)
-            if (  self.nrestart_update == 0):
-                if (self.verbose==1):
+            if (self.nrestart_update == 0):
+                if (self.verbose == 1):
                     print(' ')
-                    print('UPDATE '+str(self.iterations))
-                cpu_update=0.0
+                    print('UPDATE ' + str(self.iterations))
+                cpu_update = 0.0
             else:
-                if (self.verbose>=1):
-                    print('UPDATE '+
-                          str(self.time_iterations+1)+
-                          ' | RESTART = '+
-                          str(self.nrestart_update))
+                if (self.verbose >= 1):
+                    print(
+                        'UPDATE ' +
+                        str(self.time_iterations + 1) +
+                        ' | RESTART = ' +
+                        str(self.nrestart_update)
+                    )
             #
             # update unknows
             #
             start_time = cputiming.time()
-            [unknows,ierr,solver]=solver.update(problem, unknows)
-            cpu_update += cputiming.time()-start_time
+            [unknows, ierr, solver] = solver.update(problem, unknows)
+            cpu_update += cputiming.time() - start_time
         
             #
             # check for successfulls update
             #
-            if ( ierr == 0):
+            if (ierr == 0):
                 # info for succesfull update
-                self.iterations+=1
-                self.cpu_time+=cputiming.time()-start_time
-                if (self.verbose >=1 ):
-                    if ( self.nrestart_update == 0):
-                        print ('UPDATE SUCCEED CPU =',
-                               '{:.2f}'.format(cpu_update))
+                self.iterations += 1
+                self.cpu_time += cputiming.time() - start_time
+                if (self.verbose >= 1):
+                    if (self.nrestart_update == 0):
+                        print(
+                            'UPDATE SUCCEED CPU =' + 
+                            '{:.2f}'.format(cpu_update)
+                        )
                     else:
-                        print('UPDATE SUCCEED '+
+                        print('UPDATE SUCCEED ' +
                               str(self.nrestart_update) +
-                              ' RESTARTS CPU =',
+                              ' RESTARTS CPU =' +
                               '{:.2f}'.format(cpu_update))
                         print(' ')
                 #
                 # Ask to the user to evalute if stop cycling 
                 # 
                 # 
-                self.flag       = 4 
-                self.ierr       = 0 
+                self.flag = 4 
+                self.ierr = 0 
             else:
                 #
                 # update failed
                 #
-                if (self.verbose>=1):
+                if (self.verbose >= 1):
                     print('UPDATE FAILURE')
             
                 # try one restart more
                 self.nrestart_update += 1
             
                 # stop if number max restart update is passed 
-                if ( self.nrestart_update >= self.max_restart_update):
-                    self.flag       = -1  # breaking cycle
-                    self.ierr       = -1 
+                if (self.nrestart_update >= self.max_restart_update):
+                    self.flag = -1   # breaks cycle
+                    self.ierr = -1   # signal error
                 else:
                     # ask the user to reset controls and problem inputs
-                    self.flag =  2
+                    self.flag = 2
                     self.ierr = -1
-            return self, unknows,solver;
+            return self, unknows, solver
        
-        if (self.flag ==3):
+        if (self.flag == 3):
             # check if maximum number iterations was achieded 
-            if ( self.iterations >= self.max_iterations):
+            if (self.iterations >= self.max_iterations):
                 self.flag = -1
                 self.ierr = -1
-                if (self.verbose>=1):
-                    print(' Update Number exceed limits'+
+                if (self.verbose >= 1):
+                    print(' Update Number exceed limits' +
                           str(self.max_iterations))
                 # break cycle
-                return self, unknows,solver;
+                return self, unknows, solver
 
             # New update is required thus
             # ask for new controls
-            unknows.nrestart_update = 0 # we reset the count of restart
+            unknows.nrestart_update = 0  # we reset the count of restart
             self.flag = 2
             self.ierr = 0
-            return self, unknows,solver;
+            return self, unknows, solver
 
         if (self.flag == 4):
             # ask user new problem inputs in order to update 
             self.flag = 3
             self.ierr = 0
-            return self, unknows,solver;
-
+            return self, unknows, solver
        
     def reverse_communication_constrained_solver(self,
                                                  solver,
                                                  problem,
                                                  unknows):
-        """ 
+        """
         Subroutine to run reverse communition approach 
         of constrained solver.
         
@@ -274,26 +283,27 @@ class CycleControls():
         if (self.flag == 0):
             # syncronize
             start_time = cputiming.time()            
-            [unknows,ierr,solver]=solver.syncronize(problem, unknows)
-            syncr_time=cputiming.time()-start_time
-            self.cpu_time+=syncr_time
+            [unknows, ierr, solver] = solver.syncronize(problem, unknows)
+            syncr_time = cputiming.time() - start_time
+            self.cpu_time += syncr_time
 
-            if (self.verbose>=1):
-                print('SYNCRONIZE AT TIME: CPU', '{:.2f}'.format(syncr_time))
-            if ( ierr == 0):
+            if (self.verbose >= 1):
+                print('SYNCRONIZE AT TIME: CPU' +
+                      '{:.2f}'.format(syncr_time))
+            if (ierr == 0):
                 # study system
-                self.flag=3
-                self.ierr=0
+                self.flag = 3
+                self.ierr = 0
             else:
-                self.flag=-2
-                self.ierr=0
+                self.flag = -2
+                self.ierr = 0
                 
-            return self, unknows,solver;
+            return self, unknows, solver
     
-        if (self.flag == 2 ):
+        if (self.flag == 2):
             # user has settled problem inputs and controls
             # now we update
-            self.ierr=0
+            self.ierr = 0
             
             # Update cycle. 
             # If it succees goes to the evaluation of
@@ -302,45 +312,50 @@ class CycleControls():
             # and ask new problem inputs or ask the user to
             # reset controls (flag == 2 + ierr=-1 ).
         
-            if (  self.nrestart_update == 0):
-                if (self.verbose>=1):
+            if (self.nrestart_update == 0):
+                if (self.verbose >= 1):
                     print(' ')
-                    print('UPDATE '+str(self.iterations))
-                cpu_update=0.0
+                    print('UPDATE ' + str(self.iterations))
+                cpu_update = 0.0
             else:
-                print('UPDATE '+
-                      str(self.time_iterations+1)+
-                      ' | RESTART = '+
+                print('UPDATE ' +
+                      str(self.time_iterations+1) +
+                      ' | RESTART = ' +
                       str(self.nrestart_update))
             #
             # update unknows
             #
             start_time = cputiming.time()
-            [unknows,ierr,solver]=solver.update(problem, unknows)
-            cpu_update += cputiming.time()-start_time
+            [unknows, ierr, solver] = solver.update(problem, unknows)
+            cpu_update += cputiming.time() - start_time
         
             #
             # check for successfulls update
             #
-            if ( ierr == 0):
+            if (ierr == 0):
                 # info for succesfull update
-                self.iterations+=1
-                self.cpu_time+=cputiming.time()-start_time
-                if (self.verbose>=1):                    
-                    if ( self.nrestart_update == 0):
-                        print ('UPDATE SUCCEED CPU =',
-                               '{:.2f}'.format(cpu_update))
+                self.iterations += 1
+                self.cpu_time += cputiming.time() - start_time
+                if (self.verbose >= 1):                    
+                    if (self.nrestart_update == 0):
+                        print(
+                            'UPDATE SUCCEED CPU = ' + 
+                            '{:.2f}'.format(cpu_update)
+                        )
                     else:
-                        print('UPDATE SUCCEED '+
-                              str(self.nrestart_update) +
-                              ' RESTARTS CPU =','{:.2f}'.format(cpu_update))
+                        print(
+                            'UPDATE SUCCEED ' +
+                            str(self.nrestart_update) +
+                            ' RESTARTS CPU =' +
+                            '{:.2f}'.format(cpu_update)
+                        )
                         print(' ')
                 #
                 # Ask to the user to evalute if stop cycling 
                 # 
                 # 
-                self.flag       = 4 
-                self.ierr       = 0 
+                self.flag = 4 
+                self.ierr = 0 
             else:
                 #
                 # update failed
@@ -351,38 +366,40 @@ class CycleControls():
                 self.nrestart_update += 1
             
                 # stop if number max restart update is passed 
-                if ( self.nrestart_update >= self.max_restart_update):
-                    self.flag       = -1  # breaking cycle
-                    self.ierr       = -1 
+                if (self.nrestart_update >= self.max_restart_update):
+                    self.flag = -1  # breaking cycle
+                    self.ierr = -1 
                 else:
                     # ask the user to reset controls and problem inputs
-                    self.flag =  2
+                    self.flag = 2
                     self.ierr = -1
-            return self, unknows, solver;
+            return self, unknows, solver
        
-        if (self.flag ==3):
+        if (self.flag == 3):
             # check if maximum number iterations was achieded 
-            if ( self.iterations >= self.max_iterations):
+            if (self.iterations >= self.max_iterations):
                 self.flag = -1
                 self.ierr = -1
-                if (self.verbose>=1):
-                    print(' Update Number exceed limits'+
-                          str(self.max_iterations))
+                if (self.verbose >= 1):
+                    print(
+                        'Update Number exceed limits' + 
+                        str(self.max_iterations)
+                    )
                 # break cycle
-                return self, unknows,solver;
+                return self, unknows, solver
 
             # New update is required thus
             # ask for new controls
-            unknows.nrestart_update = 0 # we reset the count of restart
+            unknows.nrestart_update = 0  # we reset the count of restart
             self.flag = 2
             self.ierr = 0
-            return self, unknows,solver;
+            return self, unknows, solver
 
         if (self.flag == 4):
             # ask user new problem inputs in order to update 
             self.flag = 3
             self.ierr = 0
-            return self, unknows, solver;
+            return self, unknows, solver
 
         
         
