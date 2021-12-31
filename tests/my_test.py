@@ -2,12 +2,14 @@ import sys
 import os
 from copy import deepcopy as cp
 
-
-sys.path.append(os.path.abspath(
-    '../src/reverse_communication_iterative_solver/'))
-
-#from rcis import *
 from reverse_communication_iterative_solver.rcis import *
+
+#sys.path.append(os.path.abspath(
+#    '../src/reverse_communication_iterative_solver/'))
+    
+#from rcis import *
+
+
 
 class Real(Unknows):
     """
