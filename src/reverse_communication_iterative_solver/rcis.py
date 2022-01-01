@@ -48,7 +48,6 @@ satissfied.
 """
 import time as cputiming
 from abc import ABC
-
 from abc import abstractmethod
 
 
