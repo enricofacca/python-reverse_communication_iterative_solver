@@ -121,8 +121,10 @@ class ParabolaDescent(ConstrainedSolver):
         
         # example of how the setup of our problem
         # can influence solver execution
-        if (unknows.x >= problem.lower_bound and
-            unknows.x <= problem.upper_bound):
+        if (
+                unknows.x >= problem.lower_bound and
+                unknows.x <= problem.upper_bound
+        ):
             ierr = 0
         else:
             ierr = -1
