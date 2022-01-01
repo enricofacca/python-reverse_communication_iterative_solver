@@ -1,9 +1,12 @@
 import sys
-from copy import deepcopy as cp
 import time as cputiming
+from copy import deepcopy as cp
 
+from reverse_communication_iterative_solver import ConstrainedSolver
+from reverse_communication_iterative_solver import CycleControls
+from reverse_communication_iterative_solver import Problem
+from reverse_communication_iterative_solver import Unknows
 
-from reverse_communication_iterative_solver import CycleControls, Problem, Unknows, ConstrainedSolver
 # let these lines to work without installation
 # sys.path.append(os.path.abspath(
 # '../src/reverse_communication_iterative_solver/')

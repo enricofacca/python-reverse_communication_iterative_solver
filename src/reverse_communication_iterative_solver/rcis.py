@@ -46,8 +46,10 @@ satissfied.
 
 
 """
-from abc import ABC, abstractmethod
 import time as cputiming
+from abc import ABC
+
+from abs import abstractmethod
 
 
 class Solver(ABC): 
