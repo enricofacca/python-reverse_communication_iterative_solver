@@ -1,15 +1,13 @@
 import sys
-import os
 from copy import deepcopy as cp
+import time as cputiming
 
-try:
-    from reverse_communication_iterative_solver import *
-except package_not_found:
-    # let these lines to work without installation
-    sys.path.append(os.path.abspath(
-        '../src/reverse_communication_iterative_solver/')
-    )
-    from rcis import *
+
+from reverse_communication_iterative_solver import CycleControls, Problem, Unknows, ConstrainedSolver
+# let these lines to work without installation
+# sys.path.append(os.path.abspath(
+# '../src/reverse_communication_iterative_solver/')
+#    )
 
 
 class Real(Unknows):
@@ -30,10 +28,9 @@ class Real(Unknows):
         """
         Procedure for saving to file
         """        
-        f.open(file, 'w')
-        f.write(self.x)
-        f.close()
-        return info
+        f.open(file, 'w')  
+        f.write(self.x)  
+        f.close()  
 
 
 class Parabola(Problem):
@@ -124,10 +121,8 @@ class ParabolaDescent(ConstrainedSolver):
         
         # example of how the setup of our problem
         # can influence solver execution
-        if (
-                unknows.x >= problem.lower_bound and
-                unknows.x <= problem.upper_bound
-        ):
+        if (unknows.x >= problem.lower_bound and
+            unknows.x <= problem.upper_bound):
             ierr = 0
         else:
             ierr = -1
@@ -199,7 +194,7 @@ def test_main():
             if (var < 1e-4):
                 flags.flag = -1
                 flags.info = 0
-            
+
     assert abs(sol.x) < 1e-3
     return 0
 

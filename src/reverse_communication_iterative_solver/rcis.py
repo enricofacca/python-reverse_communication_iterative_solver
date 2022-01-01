@@ -69,7 +69,7 @@ class Solver(ABC):
     """
     @abstractmethod
     def update(self, problem, unknows):
-        return unknows, ierr, self
+        return unknows, ierr, self  
 
 
 class ConstrainedSolver(ABC): 
@@ -92,7 +92,7 @@ class ConstrainedSolver(ABC):
     """
     @abstractmethod
     def syncronize(self, problem, unknows):
-        return unknows, ierr, self
+        return unknows, ierr, self  
 
 
 # Two (empty) abstact classes that will contain
@@ -319,7 +319,7 @@ class CycleControls():
                 cpu_update = 0.0
             else:
                 print('UPDATE ' +
-                      str(self.time_iterations+1) +
+                      str(self.time_iterations + 1) +
                       ' | RESTART = ' +
                       str(self.nrestart_update))
             #
